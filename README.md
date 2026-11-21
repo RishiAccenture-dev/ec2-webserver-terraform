@@ -1,3 +1,5 @@
+![Terraform CI](https://github.com/RishiAccenture-dev/ec2-webserver-terraform/actions/workflows/terraform-ci.yml/badge.svg)
+
 # EC2 Web Server using Terraform
 
 Deploys a Linux EC2 web server on AWS with Terraform.
