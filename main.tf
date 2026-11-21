@@ -92,6 +92,7 @@ resource "aws_instance" "web" {
   user_data              = file("${path.module}/scripts/install_nginx.sh")
 
   tags = {
-    Name = "${var.project_name}-ec2"
+    Name        = "${var.project_name}-ec2"
+    Environment = "dev"
   }
 }
