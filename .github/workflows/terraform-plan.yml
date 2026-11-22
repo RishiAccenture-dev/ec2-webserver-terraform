@@ -1,23 +1,34 @@
 name: Terraform Plan
+
 on:
-  pull_request:
+  push:
     branches: [main]
-permissions:
-  id-token: write
-  contents: read
+
 jobs:
-  plan:
+  terraform-plan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: aws-actions/configure-aws-credentials@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::590507089733:role/github-terraform-plan
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
-      - uses: hashicorp/setup-terraform@v3
-      - run: terraform init
-      - run: terraform plan -out=tfplan
-      - uses: actions/upload-artifact@v4
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform plan
+        run: terraform plan -out=tfplan
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: tfplan
+          name: terraform-plan
           path: tfplan
